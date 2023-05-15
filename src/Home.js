@@ -1,5 +1,6 @@
 import { useState } from "react";
 import './index.css';
+import { BlogList } from "./BlogList";
 
 export const Home = () => {
   const [blogs,setBlogs]=useState([
@@ -7,14 +8,16 @@ export const Home = () => {
     {title:'My second react app',body:'Lorem Ipsum is simply dummy text of the printing',author:'Bertrand',id:2},
     {title:'My third react app',body:'Lorem Ipsum is simply dummy text of the printing',author:'Jean',id:3}
   ]);
+
+  const handleDelete=(id)=>{
+const newBlogs=blogs.filter(blog=>blog.id!==id);
+setBlogs(newBlogs);
+  }
+
   return (
     <div className='home'>
-    {blogs.map((blog)=>(
-<div className="blog-preview" key={blog.id}>
-<h2>{blog.title}</h2>
-<p>Written by {blog.author}</p>
-</div>
-  ))}
+   <BlogList blogs={blogs} title='All blogs!' handleDelete={handleDelete}/>
+  <BlogList blogs={blogs.filter((blog)=> blog.author==='Bertrand') } title='Bertrand blogs'  handleDelete={handleDelete} />
     </div>
   )
 }
