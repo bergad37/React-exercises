@@ -6,7 +6,7 @@
   font-family: "Quicksand";
   color: #333;
 }
-.navbar {
+.navbar,.title {
   padding: 20px;
   display: flex;
   align-items: center;
