@@ -1,0 +1,22 @@
+{
+    "blogs":[
+        {
+        "title":"   Think and Grow Rich",
+        "body":"Lorem Ipsum is simply dummy text of the printing",
+        "auhtor":"joe",
+        "id":1
+        },
+        {
+            "title":"   Steve Jobs",
+            "body":"Lorem Ipsum is simply dummy text of the printing",
+            "auhtor":"john",
+            "id":2   
+        },
+        {
+            "title":"Tomorrow  land",
+            "body":"Lorem Ipsum is simply dummy text of the printing",
+            "auhtor":"Doe",
+            "id":3   
+        }
+    ]
+}

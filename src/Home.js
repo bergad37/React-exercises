@@ -3,27 +3,39 @@ import './index.css';
 import { BlogList } from "./BlogList";
 
 export const Home = () => {
-  const [blogs,setBlogs]=useState([
-    {title:'My first react app',body:'Lorem Ipsum is simply dummy text of the printing',author:'Ben',id:1},
-    {title:'My second react app',body:'Lorem Ipsum is simply dummy text of the printing',author:'Bertrand',id:2},
-    {title:'My third react app',body:'Lorem Ipsum is simply dummy text of the printing',author:'Jean',id:3}
-  ]);
-
+  const [blogs,setBlogs]=useState(null);
   const [name,setName]=useState('mario');
-  const handleDelete=(id)=>{
-const newBlogs=blogs.filter(blog=>blog.id!==id);
-setBlogs(newBlogs);
-  }
-  useEffect(()=>{
-console.log(blogs);
+  const [isPending,setIsPending]=useState(true);
+const [error,setError]=useState(null);
 
-  },[name]);//dependence array , the use effect is activated only when the sate of name changes but not the state of blogs 
+  useEffect(()=>{
+setTimeout(()=>{
+  fetch('http://localhost:8000/blogs')
+  .then(res=>{
+    if(!res.ok){
+      throw Error('Could not fetch data from the server');
+    }
+    return res.json();
+  })
+  .then(data=>{
+   // console.log(data);
+    setBlogs(data);
+    setIsPending(false);
+    setError(null);
+  })
+  .catch((err)=>{
+setError(err.message);
+setIsPending(false);
+  })
+},2000);
+
+  },[]);//dependence array , the use effect is activated only when the sate of name changes but not the state of blogs 
 
   return (
     <div className='home'>
-   <BlogList blogs={blogs} title='All blogs!' handleDelete={handleDelete}/>
-   <button onClick={()=>setName('chris')}>Change name</button>
-   <p>{name}</p>
+    {error && <div>{error}</div>}
+    {isPending && <div>Loading.....</div>}
+   {blogs && <BlogList blogs={blogs} title='All blogs!' /> }
     </div>
   )
 }
