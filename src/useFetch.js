@@ -7,8 +7,10 @@ const useFetch=(url)=>{
 const [error,setError]=useState(null);
 
     useEffect(()=>{
+const abortCont=new AbortController();  //to stop the fetch method for not throwing the error that unmounted component is being updated
+
         setTimeout(()=>{
-          fetch(url)
+          fetch(url,{signal:abortCont.signal})
           .then(res=>{
             if(!res.ok){
               throw Error('Could not fetch data from the server');
@@ -22,10 +24,16 @@ const [error,setError]=useState(null);
             setError(null);
           })
           .catch((err)=>{
-        setError(err.message);
-        setIsPending(false);
+            if(err.name==='AbortError'){
+                console.log('fetch aborted');
+            }
+            else{
+                setError(err.message);
+                setIsPending(false);
+            }
           })
         },2000);
+        return ()=>abortCont.abort;
         
           },[url]);//dependence array , the use effect is activated only when the sate of name changes but not the state of blogs 
           return{data,isPending,error};
